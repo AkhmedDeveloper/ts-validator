@@ -3,7 +3,7 @@ import { callFuncsForResolutionFields } from "../../utils/callFuncsForResolution
 import { ValidatorOfType } from "../ValidatorAbstract.js";
 import { BooleanResolutionObject } from "./types.js";
 
-export class BooleanValidator extends ValidatorOfType {
+export class BooleanValidator extends ValidatorOfType<CreateChain> {
   public createChain(
     argResolution: BooleanResolutionObject = { type: "boolean" }
   ): CreateChain {
