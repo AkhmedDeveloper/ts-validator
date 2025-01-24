@@ -29,8 +29,15 @@ export class ArrayValidator extends ValidatorOfType<CreateChainOfArray> {
           arrayType(key, value) {
             if (typeof val !== "object") return;
             for (let key in val) {
-              const parse = value.safeParse(val[key]);
-              if (!parse.success) return parse;
+              const parsed = value.safeParse(val[key]);
+              if (!parsed.success)
+                return {
+                  success: false,
+                  raise: parsed.raise,
+                  position: `Array ${
+                    parsed.position ? "-> " + parsed.position : ""
+                  }`,
+                };
             }
           },
           isNonepty(key, value) {
