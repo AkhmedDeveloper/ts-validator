@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",     
+    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+    "strict": true,                                      /* Enable all strict type-checking options. */
+    "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
+    "outDir": "dist",
+    "moduleResolution": "node", // Для корректной работы с импортами, особенно с внешними пакетами
+    "target": "ES6",          // Цель компиляции, например, ES6
+    "esModuleInterop": true  
+  }
+}
