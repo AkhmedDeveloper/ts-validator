@@ -28,8 +28,3 @@ const arrScheme = v.array(
   })
 );
 
-console.log(arrScheme.safeParse([{
-  a: {
-    b: 123
-  }
-}]))
