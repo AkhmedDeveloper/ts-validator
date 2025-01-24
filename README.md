@@ -65,7 +65,7 @@ tupleScheme.safeParse(['asd', '123']) // {success: false, raise: 'ParseError: Ty
 ```typescript
 const objScheme = v.object({
 	username: v.string().min(2).max(12),
-	age: v.number().int().positive().min(18).max(99).partial()
+	age: v.number().int().positive().min(18).max(99).partial(),
 	address: v.object({
 		street: v.string()
 	})
@@ -76,11 +76,11 @@ const objScheme = v.object({
 
 В ней мы указали:
 
-    1)`username` - это строка от 2 до 12 символов
+`username` - это строка от 2 до 12 символов
 
-    2)`age` - это целочисленное и позитивное число от 18 до 99. Это поле является не обязательным
+`age` - это целочисленное и позитивное число от 18 до 99. Это поле является не обязательным
 
-    3)`address` - вложенный обьект с полем `street`, которая должна являться строкой
+`address` - вложенный обьект с полем `street`, которая должна являться строкой
 
 ##### Получение подсхем
 
@@ -207,7 +207,6 @@ v.array().length(4) // фиксированная длина массива - 4
 
 v.array().element // Достает схему элемента массива
 ```
-
 
 ## О системе. И о ее реализации
 
