@@ -131,6 +131,52 @@ unionScheme.safeParse(123) // {success: true, data: 123}
 
 Здесь мы определяем Union тип. Это тип который может состоять из нескольких типов.
 
+
+## Получение типа схемы
+
+Для получения типа схемы существует утилита `v.Infer<T>` . 
+
+
+#### Она работает как для примитивов
+
+```typescript
+const strScheme = arr.string().max(10)
+
+const strSchemeType = v.Infer<typeof strScheme> // string
+
+```
+
+
+#### Так и для сложных структур данных
+
+```typescript
+const arrScheme = v.array(v.object({`
+	name: v.string()
+`}))
+
+type ArrSchemeType = v.Infer<typeof arrScheme> // Array<{name: string}>
+
+```
+
+
+```typescript
+const unionScheme = v.union([v.string(), v.number()])
+
+type UnionSchemeType = v.Infer<typeof unionScheme> // string | number
+
+```
+
+
+```typescript
+const objScheme = v.object({
+	name: v.string().lowercased().partial()
+})
+
+type ObjSchemeType = v.Infer<typeof objScheme> // {name?: string}
+
+```
+
+
 ## Все методы типов
 
 #### General Type
@@ -210,7 +256,7 @@ v.array().element // Достает схему элемента массива
 
 ## О системе. И о ее реализации
 
-Самую важную роль в этом проекте играет архитектура. Без нее в таком многосвязанном проекте завязанный на типах в разных ее проявлениях, она превратиться в кусок не поддерживаемого легаси-кода. 
+Самую важную роль в этом проекте играет архитектура. Без нее в таком многосвязанном проекте завязанный на типах в разных ее проявлениях, она превратиться в кусок не поддерживаемого легаси-кода.
 
 Реализуются паттерны DRY, в частности мы вынесли общие методы в абстрактный класс, и сделали их переиспользуемыми
 

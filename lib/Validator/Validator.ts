@@ -1,54 +1,93 @@
 import { CreateChain } from "./types.js";
 import { ArrayValidator } from "./Validators/ArrayValidator/ArrayValidator.js";
+import { CreateChainOfArray } from "./Validators/ArrayValidator/types.js";
 import { BooleanValidator } from "./Validators/BooleanValidator/BooleanValidator.js";
+import { CreateChainOfBolean } from "./Validators/BooleanValidator/types.js";
 import { NumberValidator } from "./Validators/NumberValidator/NumberValidator.js";
+import { CreateChainOfNumber } from "./Validators/NumberValidator/types.js";
 import { ObjectValidator } from "./Validators/ObjectValidator/ObjectValidator.js";
-import { ObjectResolutionObject } from "./Validators/ObjectValidator/types.js";
+import {
+  CreateChainOfObject,
+  ObjectItemsType,
+  ObjectResolutionObject,
+} from "./Validators/ObjectValidator/types.js";
 import { StringValidator } from "./Validators/StringValidator/StringValidator.js";
 import { TupleValidator } from "./Validators/TupleValidator/TupleValidator.js";
+import { CreateChainOfTuple } from "./Validators/TupleValidator/types.js";
+import { CreateChainOfUnion } from "./Validators/UnionValidator/types.js";
 import { UnionValidator } from "./Validators/UnionValidator/UnionValidator.js";
 
-const stringValidator = new StringValidator();
-const numberValidator = new NumberValidator();
-const booleanValidator = new BooleanValidator();
-const tupleValidator = new TupleValidator();
-const objectValidator = new ObjectValidator();
-const unionValidator = new UnionValidator();
-const arrayValidator = new ArrayValidator();
+export namespace v {
+  const stringValidator = new StringValidator();
+  const numberValidator = new NumberValidator();
+  const booleanValidator = new BooleanValidator();
+  const tupleValidator = new TupleValidator();
+  const objectValidator = new ObjectValidator();
+  const unionValidator = new UnionValidator();
+  const arrayValidator = new ArrayValidator();
 
-class Validator {
-  string() {
+  export function string() {
     // this.changeCurrentTypeResolution({ type: "string" });
 
     return stringValidator.createChain();
   }
 
-  number() {
+  export function number() {
     return numberValidator.createChain();
   }
 
-  boolean() {
+  export function boolean() {
     return booleanValidator.createChain();
   }
 
-  tuple(tuple: CreateChain[]) {
+  export function tuple(tuple: CreateChain[]) {
     return tupleValidator.createChain({ type: "tuple", tuple });
   }
 
-  object<T extends object>(obj: ObjectResolutionObject<T>["object"]) {
+  export function object<T>(obj: ObjectItemsType<T>) {
     return objectValidator.createChain({ type: "object", object: obj });
   }
 
-  union(unions: CreateChain[]) {
+  export function union<T extends CreateChain[]>(unions: T): T[number] {
     return unionValidator.createChain({ type: "union", unions });
   }
 
-  array(resolutionItem: CreateChain) {
-    return arrayValidator.createChain({
+  export function array<T extends CreateChain>(resolutionItem: T) {
+    return arrayValidator.createChain<T>({
       type: "array",
       arrayType: resolutionItem,
     });
   }
-}
 
-export const v = new Validator();
+  type Override<T, U> = Omit<T, keyof U> & U;
+
+  export type Infer<T extends CreateChain> = T extends CreateChainOfUnion
+    ? T["resolution"]["unions"][keyof T["resolution"]["unions"]]
+    : T extends CreateChainOfTuple
+    ? T["resolution"]["tuple"]
+    : T extends CreateChainOfArray<any>
+    ? Infer<T["resolution"]["arrayType"]>[]
+    : T["resolution"]["type"] extends "string"
+    ? string
+    : T extends CreateChainOfNumber
+    ? number
+    : T extends CreateChainOfBolean
+    ? boolean
+    : T extends CreateChainOfObject
+    ? T extends CreateChainOfObject<T["resolution"]["object"]>
+      ? Override<
+          {
+            [K in keyof T["resolution"]["object"]]: Infer<
+              T["resolution"]["object"][K]
+            >;
+          },
+          {
+            [K in keyof T["resolution"]["object"] as T["resolution"]["object"][K]["resolution"]["isPartial"] extends true
+              ? K
+              : never]?: Infer<T["resolution"]["object"][K]>;
+            // Infer<T["resolution"]["object"][K]>;
+          }
+        >
+      : never
+    : never;
+}

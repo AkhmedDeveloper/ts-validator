@@ -1,9 +1,10 @@
+import { CreateChain } from "../../types.js";
 import { callFuncsForResolutionFields } from "../../utils/callFuncsForResolutionObj.js";
 import { ValidatorOfType } from "../ValidatorAbstract.js";
 import { ArrayResolutionObject, CreateChainOfArray } from "./types.js";
 
-export class ArrayValidator extends ValidatorOfType<CreateChainOfArray> {
-  createChain(resolution: ArrayResolutionObject): CreateChainOfArray {
+export class ArrayValidator extends ValidatorOfType<CreateChainOfArray<any>> {
+  createChain<T extends CreateChain>(resolution: ArrayResolutionObject<T>): CreateChainOfArray<T> {
     const parseGeneralMethods = super.parseGeneralMethods(resolution);
     const generalMethods = super.generalMethods(resolution);
     return {

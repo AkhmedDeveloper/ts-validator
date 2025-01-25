@@ -14,7 +14,7 @@ export abstract class ValidatorOfType<T extends CreateChain> {
     return {
       partial: () => {
         resolution.isPartial = true;
-        return this.createChain(resolution);
+        return this.createChain(resolution) as T;
       },
       required: () => {
         resolution.isPartial = false;

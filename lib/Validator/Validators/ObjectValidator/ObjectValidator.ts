@@ -3,16 +3,16 @@ import { callFuncsForResolutionFields } from "../../utils/callFuncsForResolution
 import { ValidatorOfType } from "../ValidatorAbstract.js";
 import {
   ObjectResolutionObject,
-  ObjectResolutionItems,
   isCreateChain,
   CreateChainOfObject,
+  ObjectItemsType,
 } from "./types.js";
 
 export class ObjectValidator extends ValidatorOfType<CreateChainOfObject<any>> {
-  public createChain<T extends object>(
+  public createChain<T>(
     argResolution: ObjectResolutionObject<T>
   ): CreateChainOfObject<T> {
-    const resolution = Object.assign({}, argResolution)
+    const resolution = Object.assign({}, argResolution);
     const generalMethods = super.generalMethods(resolution);
     const parseGeneralMethods = super.parseGeneralMethods(resolution);
 
@@ -50,12 +50,12 @@ export class ObjectValidator extends ValidatorOfType<CreateChainOfObject<any>> {
             )
               return;
 
-            function iterateObj<T extends object>(
-              obj: ObjectResolutionItems<T>,
+            function iterateObj<T>(
+              obj: ObjectItemsType<T>,
               value: any
             ): SafeParseRes {
               for (let key in obj) {
-                const objValue = obj[key] as any // ObjectResolutionItems[string];
+                const objValue = obj[key] as any; // ObjectResolutionItems[string];
 
                 // if (!value || value[key] === undefined) {
                 //   return {
@@ -99,9 +99,7 @@ export class ObjectValidator extends ValidatorOfType<CreateChainOfObject<any>> {
       },
       partialFields: () => {
         for (let key in resolution.object) {
-          const objValue = resolution.object[
-            key
-          ] as any // ObjectResolutionItems[string];
+          const objValue = resolution.object[key] as any; // ObjectResolutionItems[string];
 
           objValue.partial();
         }

@@ -1,11 +1,11 @@
 import { callFuncsForResolutionFields } from "../../utils/callFuncsForResolutionObj.js";
 import { ValidatorOfType } from "../ValidatorAbstract.js";
-import { TupleResolutionObject, CreateChainOfArray } from "./types.js";
+import { TupleResolutionObject, CreateChainOfTuple } from "./types.js";
 
-export class TupleValidator extends ValidatorOfType<CreateChainOfArray> {
+export class TupleValidator extends ValidatorOfType<CreateChainOfTuple> {
   public createChain(
     argResolution: TupleResolutionObject = { type: "tuple" }
-  ): CreateChainOfArray {
+  ): CreateChainOfTuple {
     const resolution = Object.assign({}, argResolution)
     const generalMethods = super.generalMethods(resolution);
     const parseGeneralMethods = super.parseGeneralMethods(resolution);

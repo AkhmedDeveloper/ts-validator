@@ -1,19 +1,29 @@
-import { CreateChain, TypeResolutionObject } from "../../types.js"
+import {
+  CreateChain,
+  ExtendsCreateChain,
+  TypeResolutionObject,
+} from "../../types.js";
 
-export type ObjectResolutionItems<T extends object> = {
-  [key in keyof T]: CreateChain
+export type ObjectItemsType<T> = {
+  [K in keyof T]: T[K] extends CreateChain ? T[K] : never;
+
 }
-export interface ObjectResolutionObject<T extends object> extends TypeResolutionObject<'object'> {
-  object: ObjectResolutionItems<T>
-  isStrict?:boolean;
+
+export interface ObjectResolutionObject<T>
+  extends TypeResolutionObject<"object"> {
+  object: ObjectItemsType<T>
+  isStrict?: boolean;
 }
 
 export function isCreateChain(obj: any): obj is CreateChain {
-  return obj?.resolution ? true : false
+  return obj?.resolution ? true : false;
 }
 
-export interface CreateChainOfObject<T extends object> extends CreateChain {
-  partialFields: () => CreateChain
-  strict: () => CreateChain
-  shape: ObjectResolutionItems<T>
+export interface CreateChainOfObject<T = {}>
+  extends CreateChain {
+  shape: ObjectItemsType<T>
+  resolution: ObjectResolutionObject<T>;
+
+  partialFields: () => this;
+  strict: () => this;
 }

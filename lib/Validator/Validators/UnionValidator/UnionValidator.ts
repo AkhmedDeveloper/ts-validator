@@ -1,10 +1,10 @@
 import { TypeResolutionObject, CreateChain } from "../../types.js";
 import { callFuncsForResolutionFields } from "../../utils/callFuncsForResolutionObj.js";
 import { ValidatorOfType } from "../ValidatorAbstract.js";
-import { UnionResolutionObject } from "./types.js";
+import { CreateChainOfUnion, UnionResolutionObject } from "./types.js";
 
-export class UnionValidator extends ValidatorOfType<CreateChain> {
-  createChain(argResolution: UnionResolutionObject): CreateChain {
+export class UnionValidator extends ValidatorOfType<CreateChainOfUnion> {
+  createChain(argResolution: UnionResolutionObject): CreateChainOfUnion {
     const resolution = Object.assign({}, argResolution)
     const generalMethods = super.generalMethods(resolution);
     const parseGeneralMethods = super.parseGeneralMethods(resolution);

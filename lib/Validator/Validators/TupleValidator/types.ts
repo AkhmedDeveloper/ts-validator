@@ -1,7 +1,7 @@
 import { CreateChain, TypeResolutionObject } from "../../types.js";
 
-export interface CreateChainOfArray extends CreateChain {
-  
+export interface CreateChainOfTuple extends CreateChain {
+  resolution: TupleResolutionObject
 }
 
 export interface TupleResolutionObject extends TypeResolutionObject<'tuple'> {

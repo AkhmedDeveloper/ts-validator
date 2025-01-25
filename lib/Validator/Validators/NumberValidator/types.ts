@@ -1,21 +1,22 @@
 import { CreateChain, TypeResolutionObject } from "../../types.js";
 
-export interface NumberResolutionObject extends TypeResolutionObject<'number'> {
+export interface NumberResolutionObject extends TypeResolutionObject<"number"> {
   min?: number;
   max?: number;
-  isInteger?: boolean
+  isInteger?: boolean;
 
-  typeofNum?: 'positive' | 'negative' | 'nonnegative' | 'nonpositive'
+  typeofNum?: "positive" | "negative" | "nonnegative" | "nonpositive";
 }
 
 export interface CreateChainOfNumber extends CreateChain {
   min: (val: number) => CreateChainOfNumber;
   max: (val: number) => CreateChainOfNumber;
-  int: () => CreateChainOfNumber,
+  int: () => CreateChainOfNumber;
 
-  positive: () => CreateChainOfNumber,
-  negative: () => CreateChainOfNumber
-  nonnegative: () => CreateChainOfNumber
-  nonpositive: () => CreateChainOfNumber,
+  positive: () => CreateChainOfNumber;
+  negative: () => CreateChainOfNumber;
+  nonnegative: () => CreateChainOfNumber;
+  nonpositive: () => CreateChainOfNumber;
+
+  resolution: NumberResolutionObject;
 }
-

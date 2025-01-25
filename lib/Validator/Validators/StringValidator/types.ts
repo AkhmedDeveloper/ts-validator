@@ -6,6 +6,7 @@ export interface CreateChainOfString extends CreateChain {
 
   uppercased: () => CreateChainOfString;
   lowercased: () => CreateChainOfString;
+  resolution: StringResolutionObject,
 }
 
 export interface StringResolutionObject extends TypeResolutionObject<"string"> {

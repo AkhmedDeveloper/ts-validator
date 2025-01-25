@@ -1,12 +1,12 @@
 import { CreateChain } from "../../types.js";
 import { callFuncsForResolutionFields } from "../../utils/callFuncsForResolutionObj.js";
 import { ValidatorOfType } from "../ValidatorAbstract.js";
-import { BooleanResolutionObject } from "./types.js";
+import { BooleanResolutionObject, CreateChainOfBolean } from "./types.js";
 
-export class BooleanValidator extends ValidatorOfType<CreateChain> {
+export class BooleanValidator extends ValidatorOfType<CreateChainOfBolean> {
   public createChain(
     argResolution: BooleanResolutionObject = { type: "boolean" }
-  ): CreateChain {
+  ): CreateChainOfBolean {
     const resolution = Object.assign({}, argResolution)
 
     const generalMethods = super.generalMethods(resolution)
