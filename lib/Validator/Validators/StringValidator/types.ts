@@ -1,11 +1,11 @@
 import { CreateChain, TypeResolutionObject } from "../../types.js";
 
 export interface CreateChainOfString extends CreateChain {
-  min: (val: number) => CreateChainOfString;
-  max: (val: number) => CreateChainOfString;
+  min: (val: number) => this;
+  max: (val: number) => this;
 
-  uppercased: () => CreateChainOfString;
-  lowercased: () => CreateChainOfString;
+  uppercased: () => this;
+  lowercased: () => this;
   resolution: StringResolutionObject,
 }
 
@@ -15,3 +15,19 @@ export interface StringResolutionObject extends TypeResolutionObject<"string"> {
   uppercased?: boolean;
   lowercased?: boolean;
 }
+
+/** 
+
+{
+  min: () => this
+  max: () => this
+  uppercased: () => this;
+  lowercased: () => this;
+
+  resolution: {
+    isPartial: boolean;
+    uppercased: boolean;
+  }
+}
+
+**/

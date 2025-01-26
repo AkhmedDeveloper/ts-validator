@@ -2,23 +2,23 @@ import {
   TypeResolutionObject,
   CreateChain,
   CreateChainGeneralMethods,
+  DeepOmit,
 } from "../types.js";
 
 export abstract class ValidatorOfType<T extends CreateChain> {
   public abstract createChain(resolution?: TypeResolutionObject): T;
 
-  protected generalMethods(resolution: TypeResolutionObject): {
-    partial: () => T;
-    required: () => T;
-  } {
+  protected generalMethods(
+    resolution: TypeResolutionObject
+  ): {[key: string]: () => CreateChain} {
     return {
       partial: () => {
         resolution.isPartial = true;
-        return this.createChain(resolution) as T;
+        return this.createChain(resolution) as any;
       },
       required: () => {
         resolution.isPartial = false;
-        return this.createChain(resolution);
+        return this.createChain(resolution) as any;
       },
     };
   }

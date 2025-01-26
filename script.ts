@@ -10,13 +10,7 @@ const stringScheme = v.string().uppercased().min(2);
 const unionScheme = v.union([v.string(), v.number()]);
 
 
-const objScheme = v.object({
-  a: v.string().partial(),
-  b: v.object({
-    name: v.string()
-  })
-});
-objScheme.shape.a['resolution']
+
 
 const tupleScheme = v.tuple([v.string(), v.number()]);
 
@@ -31,11 +25,18 @@ const arrScheme = v.array(
 arrScheme.element
 
 console.log(stringScheme);
-// unionScheme['resolution']['unions']
+
+
+
+const objScheme = v.object({
+  a: v.string().max(2).partial()
+});
+
 type c = v.Infer<typeof objScheme>
 const h: c = {
-  b: 'asd',
+  a: 'asd'
 }
+
 
 
 type y = typeof objScheme['resolution']['object']['a']['resolution']

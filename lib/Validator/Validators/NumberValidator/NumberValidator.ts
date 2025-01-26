@@ -121,7 +121,7 @@ export class NumberValidator extends ValidatorOfType<CreateChainOfNumber> {
         return this.createChain(resolution);
       },
       resolution,
-    };
+    } as CreateChainOfNumber;
   }
 }
 

@@ -1,13 +1,17 @@
-import { SafeParseRes } from "../../types.js";
+import { isPartial, SafeParseRes } from "../../types.js";
 import { callFuncsForResolutionFields } from "../../utils/callFuncsForResolutionObj.js";
 import { ValidatorOfType } from "../ValidatorAbstract.js";
 import { CreateChainOfString, StringResolutionObject } from "./types.js";
 
 export class StringValidator extends ValidatorOfType<CreateChainOfString> {
-  createChain = (
-    argResolution: StringResolutionObject = { type: "string" }
-  ): CreateChainOfString => {
-    const resolution = Object.assign({}, argResolution)
+  createChain(
+    argResolution: StringResolutionObject
+  ): CreateChainOfString {
+    const resolution = Object.assign(
+      {},
+      argResolution
+    ) as StringResolutionObject;
+
     const generalMethods = super.generalMethods(resolution);
     const parseGeneralMethods = super.parseGeneralMethods(resolution);
     return {
@@ -86,6 +90,6 @@ export class StringValidator extends ValidatorOfType<CreateChainOfString> {
         return parseRes;
       },
       resolution,
-    };
-  };
+    } as CreateChainOfString;
+  }
 }

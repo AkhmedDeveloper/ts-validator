@@ -4,9 +4,9 @@ import { ValidatorOfType } from "../ValidatorAbstract.js";
 import { BooleanResolutionObject, CreateChainOfBolean } from "./types.js";
 
 export class BooleanValidator extends ValidatorOfType<CreateChainOfBolean> {
-  public createChain(
+  public createChain<T extends CreateChainOfBolean>(
     argResolution: BooleanResolutionObject = { type: "boolean" }
-  ): CreateChainOfBolean {
+  ): T {
     const resolution = Object.assign({}, argResolution)
 
     const generalMethods = super.generalMethods(resolution)
@@ -38,7 +38,7 @@ export class BooleanValidator extends ValidatorOfType<CreateChainOfBolean> {
         return parsed;
       },
       resolution,
-    };
+    } as T;
   }
 }
 

@@ -103,6 +103,6 @@ export class ArrayValidator extends ValidatorOfType<CreateChainOfArray<any>> {
       element: resolution.arrayType,
 
       resolution,
-    };
+    } as CreateChainOfArray<T>;
   }
 }

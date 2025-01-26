@@ -1,4 +1,4 @@
-import { CreateChain } from "./types.js";
+import { CreateChain, Override } from "./types.js";
 import { ArrayValidator } from "./Validators/ArrayValidator/ArrayValidator.js";
 import { CreateChainOfArray } from "./Validators/ArrayValidator/types.js";
 import { BooleanValidator } from "./Validators/BooleanValidator/BooleanValidator.js";
@@ -27,9 +27,7 @@ export namespace v {
   const arrayValidator = new ArrayValidator();
 
   export function string() {
-    // this.changeCurrentTypeResolution({ type: "string" });
-
-    return stringValidator.createChain();
+    return stringValidator.createChain({type: 'string'} );
   }
 
   export function number() {
@@ -59,7 +57,7 @@ export namespace v {
     });
   }
 
-  type Override<T, U> = Omit<T, keyof U> & U;
+  
 
   export type Infer<T extends CreateChain> = T extends CreateChainOfUnion
     ? T["resolution"]["unions"][keyof T["resolution"]["unions"]]

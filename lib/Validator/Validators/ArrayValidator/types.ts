@@ -6,10 +6,10 @@ import {
 
 export interface CreateChainOfArray<T extends CreateChain> extends CreateChain {
   element: T;
-  nonempty: () => CreateChainOfArray<T>;
-  min: (val: number) => CreateChainOfArray<T>;
-  max: (val: number) => CreateChainOfArray<T>;
-  length: (val: number) => CreateChainOfArray<T>;
+  nonempty: () => this;
+  min: (val: number) => this;
+  max: (val: number) => this;
+  length: (val: number) => this;
   resolution: ArrayResolutionObject<T>
 }
 

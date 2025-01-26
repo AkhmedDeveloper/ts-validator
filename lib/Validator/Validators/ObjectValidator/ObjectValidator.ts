@@ -104,7 +104,7 @@ export class ObjectValidator extends ValidatorOfType<CreateChainOfObject<any>> {
           objValue.partial();
         }
 
-        return this.createChain(resolution).partial();
+        return this.createChain(resolution)
       },
       strict: () => {
         resolution.isStrict = true;
@@ -112,6 +112,6 @@ export class ObjectValidator extends ValidatorOfType<CreateChainOfObject<any>> {
       },
       shape: resolution.object,
       resolution,
-    };
+    } as CreateChainOfObject<T>;
   }
 }

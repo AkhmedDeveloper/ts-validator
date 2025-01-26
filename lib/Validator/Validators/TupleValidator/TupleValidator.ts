@@ -54,6 +54,6 @@ export class TupleValidator extends ValidatorOfType<CreateChainOfTuple> {
         return val;
       },
       resolution,
-    };
+    } as CreateChainOfTuple;
   }
 }
