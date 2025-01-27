@@ -1,4 +1,4 @@
-import { CreateChain, Override } from "./types.js";
+import { CreateChain, CreateChainBase, Override } from "./types.js";
 import { ArrayValidator } from "./Validators/ArrayValidator/ArrayValidator.js";
 import { CreateChainOfArray } from "./Validators/ArrayValidator/types.js";
 import { BooleanValidator } from "./Validators/BooleanValidator/BooleanValidator.js";
@@ -27,7 +27,7 @@ export namespace v {
   const arrayValidator = new ArrayValidator();
 
   export function string() {
-    return stringValidator.createChain({type: 'string'} );
+    return stringValidator.createChain({ type: "string" });
   }
 
   export function number() {
@@ -57,20 +57,24 @@ export namespace v {
     });
   }
 
-  
+  type Partialize<T extends CreateChainBase, Type extends any> = T extends {
+    resolution: { isPartial: true };
+  }
+    ? Type | undefined
+    : Type;
 
-  export type Infer<T extends CreateChain> = T extends CreateChainOfUnion
+  export type Infer<T extends CreateChainBase> = T extends CreateChainOfUnion
     ? T["resolution"]["unions"][keyof T["resolution"]["unions"]]
     : T extends CreateChainOfTuple
     ? T["resolution"]["tuple"]
     : T extends CreateChainOfArray<any>
     ? Infer<T["resolution"]["arrayType"]>[]
     : T["resolution"]["type"] extends "string"
-    ? string
+    ? Partialize<T, string>
     : T extends CreateChainOfNumber
-    ? number
+    ? Partialize<T, number>
     : T extends CreateChainOfBolean
-    ? boolean
+    ? Partialize<T, boolean>
     : T extends CreateChainOfObject
     ? T extends CreateChainOfObject<T["resolution"]["object"]>
       ? Override<
@@ -83,7 +87,6 @@ export namespace v {
             [K in keyof T["resolution"]["object"] as T["resolution"]["object"][K]["resolution"]["isPartial"] extends true
               ? K
               : never]?: Infer<T["resolution"]["object"][K]>;
-            // Infer<T["resolution"]["object"][K]>;
           }
         >
       : never

@@ -1,5 +1,6 @@
 import {
   CreateChain,
+  CreateChainMethods,
   ExtendsCreateChain,
   TypeResolutionObject,
 } from "../../types.js";

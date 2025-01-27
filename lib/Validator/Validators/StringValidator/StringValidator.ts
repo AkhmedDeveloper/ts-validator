@@ -1,18 +1,18 @@
-import { isPartial, SafeParseRes } from "../../types.js";
+import { SafeParseRes } from "../../types.js";
 import { callFuncsForResolutionFields } from "../../utils/callFuncsForResolutionObj.js";
+import { v } from "../../Validator.js";
 import { ValidatorOfType } from "../ValidatorAbstract.js";
 import { CreateChainOfString, StringResolutionObject } from "./types.js";
 
 export class StringValidator extends ValidatorOfType<CreateChainOfString> {
-  createChain(
-    argResolution: StringResolutionObject
-  ): CreateChainOfString {
+  createChain(argResolution: StringResolutionObject): CreateChainOfString {
     const resolution = Object.assign(
       {},
       argResolution
-    ) as StringResolutionObject;
+    ) as StringResolutionObject; // меняем ссылку на обьект, чтобы не мутировать старый
 
     const generalMethods = super.generalMethods(resolution);
+    
     const parseGeneralMethods = super.parseGeneralMethods(resolution);
     return {
       ...generalMethods,
@@ -32,7 +32,7 @@ export class StringValidator extends ValidatorOfType<CreateChainOfString> {
         resolution.max = val;
         return this.createChain(resolution);
       },
-      safeParse: (val: any): SafeParseRes => {
+      safeParse: (val: any): SafeParseRes<v.Infer<CreateChainOfString>> => {
         const callsFuncsRes = callFuncsForResolutionFields(resolution, {
           type(key, value) {
             const parse = parseGeneralMethods.type(val);
@@ -81,7 +81,7 @@ export class StringValidator extends ValidatorOfType<CreateChainOfString> {
         if (callsFuncsRes) return callsFuncsRes;
         return {
           success: true,
-          data: val,
+          data: val as v.Infer<CreateChainOfString>,
         };
       },
       parse(val: any) {

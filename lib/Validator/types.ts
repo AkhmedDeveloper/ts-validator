@@ -1,20 +1,10 @@
-import { CreateChainOfArray } from "./Validators/ArrayValidator/types.js";
-import { CreateChainOfBolean } from "./Validators/BooleanValidator/types.js";
-import { CreateChainOfNumber } from "./Validators/NumberValidator/types.js";
-import {
-  CreateChainOfObject,
-  ObjectResolutionObject,
-} from "./Validators/ObjectValidator/types.js";
-import { CreateChainOfString } from "./Validators/StringValidator/types.js";
-import { CreateChainOfTuple } from "./Validators/TupleValidator/types.js";
-import { CreateChainOfUnion } from "./Validators/UnionValidator/types.js";
-
-export type PrimitiveType = "string" | "number" | "boolean";
+import { v } from "./Validator.js";
 
 export type ObjectType = {
   [key: string | number]: any;
 };
 
+export type PrimitiveType = "string" | "number" | "boolean";
 export type ComplexType = "object" | "array";
 export type CustomComplexType = "union" | "tuple";
 export type ResolutionType = PrimitiveType | ComplexType | CustomComplexType;
@@ -38,11 +28,11 @@ export type FailedParse = {
   raise: `ParseError: ${string}`;
   position?: string;
 };
-export type SuccessParse = {
+export type SuccessParse<T> = {
   success: true;
-  data: any;
+  data: T;
 };
-export type SafeParseRes = SuccessParse | FailedParse;
+export type SafeParseRes<SuccessType> = SuccessParse<SuccessType> | FailedParse;
 
 export type Override<T, U> = Omit<T, keyof U> & U;
 
@@ -54,56 +44,32 @@ export type GetKeysInRow<T, N extends string | undefined = undefined> = {
     : `${key & string}`;
 }[keyof T];
 
-type IncrementDepth<T extends any[]> = [...T, any];
-export type MaxDepth = 3;
-// Основной тип DeepOmit с проверкой глубины
-export type DeepOmit<
-  T extends object,
-  K extends string,
-  BaseKey extends string | undefined = undefined,
-  Depth extends any[] = []
-> = Depth["length"] extends MaxDepth
-  ? T
-  : BaseKey extends string
-  ? {
-      [key in keyof T as `${BaseKey}.${key & string}` extends K
-        ? never
-        : key]: T[key] extends { [key: string]: Exclude<unknown, Function> }
-        ? DeepOmit<
-            T[key],
-            K,
-            `${BaseKey & string}.${key & string}`,
-            IncrementDepth<Depth>
-          >
-        : T[key];
-    }
-  : {
-      [key in keyof T as key extends K ? never : key]: T[key] extends {
-        [key: string]: Exclude<unknown, Function>;
-      }
-        ? DeepOmit<T[key], K, key & string, IncrementDepth<Depth>> // Увеличиваем глубину
-        : T[key];
-    };
 
-export interface  CreateChainGeneralMethods {
-  partial: () => DeepOmit<this, "resolution.isPartial"> & {
-    resolution: { isPartial: true };
-  };
-  required: () => DeepOmit<this, "resolution.isPartial"> & {
-    resolution: { isPartial: false };
-  };
+export interface CreateChainPartialed<T extends TypeResolutionObject> extends CreateChain {
+  resolution: Omit<T, 'isPartial'> & { isPartial: true };
+}
+export interface CreateChainRequired<T extends TypeResolutionObject> extends CreateChain {
+  resolution: Omit<T, 'isPartial'> & { isPartial: false };
 }
 
-export function isPartial(
-  resolution: TypeResolutionObject
-): resolution is TypeResolutionObject & { isPartial: true } {
-  return resolution.isPartial ? true : false;
-}
-
-export interface CreateChain extends CreateChainGeneralMethods {
-  safeParse: (val?: any) => SafeParseRes;
-  parse: (val: any) => SuccessParse | never;
+export interface CreateChainBase<T extends CreateChain = CreateChain> {
   resolution: TypeResolutionObject;
+  partial: (this: T) => Omit<this, 'resolution'> & CreateChainPartialed<this['resolution']>;
+  required: (this: T) => Omit<this, 'resolution'> & CreateChainRequired<this['resolution']>;
 }
+
+export interface CreateChainMethods<T extends CreateChainBase | false = false> {
+  safeParse: (
+    val?: any
+  ) => SafeParseRes<T extends CreateChainBase ? v.Infer<T> : any>;
+  parse: (
+    val: any
+  ) => SuccessParse<T extends CreateChainBase ? v.Infer<T> : any> | never;
+}
+
+export interface CreateChain<T extends CreateChainBase | false = false>
+  extends CreateChainBase,
+    CreateChainMethods<T> {}
+type c = CreateChain;
 
 export type ExtendsCreateChain<T> = T extends CreateChain ? T : never;

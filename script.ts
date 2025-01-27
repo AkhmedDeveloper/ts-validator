@@ -5,9 +5,15 @@ const boolScheme = v.boolean();
 const numScheme = v.number().min(0).max(1000).int().positive();
 console.log(numScheme.safeParse(10));
 
-const stringScheme = v.string().uppercased().min(2);
+  const stringScheme = v.string().partial()
 
-const unionScheme = v.union([v.string(), v.number()]);
+const res = stringScheme.safeParse(123)
+if(res.success){
+  res.data 
+}
+
+
+const unionScheme = v.union([v.string(), v.number()])
 
 
 
@@ -29,13 +35,14 @@ console.log(stringScheme);
 
 
 const objScheme = v.object({
-  a: v.string().max(2).partial()
+  a: v.string().partial()
 });
 
 type c = v.Infer<typeof objScheme>
 const h: c = {
   a: 'asd'
 }
+
 
 
 

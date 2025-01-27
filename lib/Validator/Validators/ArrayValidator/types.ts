@@ -1,8 +1,11 @@
 import {
   CreateChain,
+  CreateChainMethods,
   ResolutionType,
+  SafeParseRes,
   TypeResolutionObject,
 } from "../../types.js";
+import { v } from "../../Validator.js";
 
 export interface CreateChainOfArray<T extends CreateChain> extends CreateChain {
   element: T;
@@ -11,6 +14,7 @@ export interface CreateChainOfArray<T extends CreateChain> extends CreateChain {
   max: (val: number) => this;
   length: (val: number) => this;
   resolution: ArrayResolutionObject<T>
+
 }
 
 export interface ArrayResolutionObject<T extends CreateChain> extends TypeResolutionObject<"array"> {

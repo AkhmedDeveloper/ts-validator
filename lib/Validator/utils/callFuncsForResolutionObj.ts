@@ -3,7 +3,7 @@ import { SafeParseRes } from "../types";
 export const callFuncsForResolutionFields = <T extends object>(
   obj: T,
   callbacks: {
-    [key in keyof T]: (key: key, value: T[key]) => SafeParseRes | void;
+    [key in keyof T]: (key: key, value: T[key]) => SafeParseRes<any> | void;
   }
 ) => {
   if (!obj || !callbacks) return;

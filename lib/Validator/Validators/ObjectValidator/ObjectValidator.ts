@@ -30,7 +30,7 @@ export class ObjectValidator extends ValidatorOfType<CreateChainOfObject<any>> {
                 raise: `ParseError: Type Is Not Equal`,
               };
 
-            function checkOnStrictType(): SafeParseRes | undefined {
+            function checkOnStrictType(): ReturnType<CreateChainOfObject['safeParse']> | undefined {
               if (!resolution.isStrict) return;
               for (let key in val) {
                 if (key in resolution.object) continue;
@@ -53,17 +53,10 @@ export class ObjectValidator extends ValidatorOfType<CreateChainOfObject<any>> {
             function iterateObj<T>(
               obj: ObjectItemsType<T>,
               value: any
-            ): SafeParseRes {
+            ): ReturnType<CreateChainOfObject['safeParse']> {
               for (let key in obj) {
-                const objValue = obj[key] as any; // ObjectResolutionItems[string];
+                const objValue = obj[key] as CreateChain;
 
-                // if (!value || value[key] === undefined) {
-                //   return {
-                //     success: false,
-                //     raise: "ParseError: One Of The Field Is Not Defined",
-                //     position: `Object( Key: ${key} ) `,
-                //   };
-                // }
 
                 const parsed = objValue.safeParse(value[key]);
                 if (!parsed.success)
