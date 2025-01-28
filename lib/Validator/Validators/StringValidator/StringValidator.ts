@@ -89,7 +89,6 @@ export class StringValidator extends ValidatorOfType<CreateChainOfString> {
         if (!parseRes.success) throw new Error(parseRes.raise);
         return parseRes;
       },
-      resolution,
     } as CreateChainOfString;
   }
 }

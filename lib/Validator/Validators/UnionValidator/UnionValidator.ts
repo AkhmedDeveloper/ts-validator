@@ -44,7 +44,6 @@ export class UnionValidator extends ValidatorOfType<CreateChainOfUnion> {
           data: val,
         };
       },
-      resolution,
     } as CreateChainOfUnion;
   }
 }

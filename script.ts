@@ -3,23 +3,18 @@ import { v } from "./lib/Validator/index.js";
 const boolScheme = v.boolean();
 
 const numScheme = v.number().min(0).max(1000).int().positive();
-console.log(numScheme.safeParse(10));
+numScheme.safeParse(10)
 
-  const stringScheme = v.string().partial()
-
-const res = stringScheme.safeParse(123)
-if(res.success){
-  res.data 
-}
+const stringScheme = v.string().partial()
+stringScheme.safeParse(2)
+stringScheme.safeParse(123)
 
 
 const unionScheme = v.union([v.string(), v.number()])
-
-
-
+unionScheme.safeParse('asd')
 
 const tupleScheme = v.tuple([v.string(), v.number()]);
-
+tupleScheme.safeParse([1, 2])
 
 const arrScheme = v.array(
   v.object({
@@ -28,22 +23,14 @@ const arrScheme = v.array(
     }),
   })
 );
-arrScheme.element
-
-console.log(stringScheme);
-
+const arrElement = arrScheme.element
 
 
 const objScheme = v.object({
   a: v.string().partial()
 });
 
-type c = v.Infer<typeof objScheme>
-const h: c = {
-  a: 'asd'
-}
-
-
-
-
-type y = typeof objScheme['resolution']['object']['a']['resolution']
+type ObjSchemeType = v.Infer<typeof objScheme>
+const obj: ObjSchemeType = {
+  a: 'asd',
+} 

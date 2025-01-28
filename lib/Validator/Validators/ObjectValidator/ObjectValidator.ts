@@ -104,7 +104,6 @@ export class ObjectValidator extends ValidatorOfType<CreateChainOfObject<any>> {
         return this.createChain(resolution);
       },
       shape: resolution.object,
-      resolution,
     } as CreateChainOfObject<T>;
   }
 }

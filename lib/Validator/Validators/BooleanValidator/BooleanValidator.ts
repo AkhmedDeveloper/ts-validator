@@ -37,7 +37,6 @@ export class BooleanValidator extends ValidatorOfType<CreateChainOfBolean> {
 
         return parsed;
       },
-      resolution,
     } as T;
   }
 }

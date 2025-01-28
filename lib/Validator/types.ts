@@ -70,6 +70,5 @@ export interface CreateChainMethods<T extends CreateChainBase | false = false> {
 export interface CreateChain<T extends CreateChainBase | false = false>
   extends CreateChainBase,
     CreateChainMethods<T> {}
-type c = CreateChain;
 
 export type ExtendsCreateChain<T> = T extends CreateChain ? T : never;

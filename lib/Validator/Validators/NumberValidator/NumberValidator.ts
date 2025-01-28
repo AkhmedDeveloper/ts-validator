@@ -120,7 +120,6 @@ export class NumberValidator extends ValidatorOfType<CreateChainOfNumber> {
         resolution.typeofNum = "nonpositive";
         return this.createChain(resolution);
       },
-      resolution,
     } as CreateChainOfNumber;
   }
 }
