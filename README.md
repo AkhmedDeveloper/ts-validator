@@ -131,11 +131,9 @@ unionScheme.safeParse(123) // {success: true, data: 123}
 
 Здесь мы определяем Union тип. Это тип который может состоять из нескольких типов.
 
-
 ## Получение типа схемы
 
-Для получения типа схемы существует утилита `v.Infer<T>` . 
-
+Для получения типа схемы существует утилита `v.Infer<T>` .
 
 #### Она работает как для примитивов
 
@@ -145,7 +143,6 @@ const strScheme = arr.string().max(10)
 const strSchemeType = v.Infer<typeof strScheme> // string
 
 ```
-
 
 #### Так и для сложных структур данных
 
@@ -158,14 +155,12 @@ type ArrSchemeType = v.Infer<typeof arrScheme> // Array<{name: string}>
 
 ```
 
-
 ```typescript
 const unionScheme = v.union([v.string(), v.number()])
 
 type UnionSchemeType = v.Infer<typeof unionScheme> // string | number
 
 ```
-
 
 ```typescript
 const objScheme = v.object({
@@ -176,6 +171,22 @@ type ObjSchemeType = v.Infer<typeof objScheme> // {name?: string}
 
 ```
 
+
+
+## О типах
+
+#### Типизация ответа парсинга
+
+![1738060910774](image/README/1738060910774.png)
+
+Валидатор умно парсит результат. Он может быть ошибкой. Либо успешно выполненным с указанием определенного типа исходя из схемы
+
+
+#### Цепочка вызовов методов
+
+![1738061052035](image/README/1738061052035.png)
+
+Исходя из схемы у нас также генерируются типы результата вызова методов. Цепочка может быть бесконечной, а при повторных вызовах одного и того же метода, они будут перезаписывать предыдущий вызов
 
 ## Все методы типов
 
